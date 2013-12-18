@@ -1,0 +1,31 @@
+{
+    "name" : "dcarbone/dom-plus",
+    "type" : "library",
+    "description" : "A DOMDocument class wrapper that adds some simple improvements",
+
+    "keywords": [
+        "php",
+        "domdocument",
+        "smartdomdocument"
+    ],
+    "homepage": "https://github.com/dcarbone/dom-plus",
+    "license": "MIT",
+
+    "authors" : [
+        {
+            "name" : "Daniel Carbone",
+            "email" : "daniel.p.carbone@gmail.com"
+        }
+    ],
+
+    "require" : {
+        "php" : ">=5.3.3",
+        "lib-libxml" : "*"
+    },
+
+    "autoload" : {
+        "psr-0" : {
+            "DCarbone\\DOMPlus\\" : "lib/"
+        }
+    }
+}
