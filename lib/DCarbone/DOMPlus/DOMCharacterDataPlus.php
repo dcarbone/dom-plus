@@ -34,7 +34,7 @@ class DOMCharacterDataPlus extends \DOMCharacterData implements INodePlus
      */
     public function appendTo(\DOMNode $node)
     {
-        return DOMStatic::appendTo($this, $node, true);
+        return DOMStatic::appendTo($this, $node);
     }
 
     /**
@@ -55,5 +55,34 @@ class DOMCharacterDataPlus extends \DOMCharacterData implements INodePlus
     public function appendChildren(\DOMNodeList $nodes)
     {
         throw new \BadMethodCallException('Cannot append a child to a node of type DOMCharacterData');
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function cloneTo(\DOMNode $node)
+    {
+        return DOMStatic::appendTo($node, $this->cloneNode(true));
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @throws \BadMethodCallException
+     * @return \DOMNode|null|bool
+     */
+    public function cloneAndAppendChild(\DOMNode $node)
+    {
+        throw new \BadMethodCallException('Cannot append a child to a node of type DOMText');
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @throws \BadMethodCallException
+     * @return \DOMNode|null|bool
+     */
+    public function cloneAndAppendChildren(\DOMNodeList $nodes)
+    {
+        throw new \BadMethodCallException('Cannot append a child to a node of type DOMText');
     }
 }

@@ -67,17 +67,16 @@ class DOMStatic
     /**
      * @param \DOMNode $source
      * @param \DOMNode $destination
-     * @param bool $deep
      * @return \DOMNode|null
      */
-    public static function appendTo(\DOMNode $source, \DOMNode $destination, $deep = false)
+    public static function appendTo(\DOMNode $source, \DOMNode $destination)
     {
         if ($destination instanceof \DOMDocument)
         {
             if ($source->ownerDocument === $destination)
                 return $destination->appendChild($source);
 
-            $ret = $destination->appendChild($destination->importNode($source, $deep));
+            $ret = $destination->appendChild($destination->importNode($source, true));
             if ($source->parentNode !== null)
                 $source->parentNode->removeChild($source);
 
@@ -87,7 +86,7 @@ class DOMStatic
         if ($source->ownerDocument === $destination->ownerDocument)
             return $destination->appendChild($source);
 
-        $ret = $destination->appendChild($destination->ownerDocument->importNode($source, $deep));
+        $ret = $destination->appendChild($destination->ownerDocument->importNode($source, true));
         if ($source->parentNode !== null)
             $source->parentNode->removeChild($source);
 
@@ -97,7 +96,7 @@ class DOMStatic
     /**
      * @param \DOMNodeList $sourceList
      * @param \DOMNode $destination
-     * @return \DOMNode|null|bool
+     * @return \DOMNode|bool
      */
     public static function appendChildrenTo(\DOMNodeList $sourceList, \DOMNode $destination)
     {
@@ -107,7 +106,28 @@ class DOMStatic
             if ($loop > 1 && $sourceList->length === $initial)
                 $i++;
 
-            $ret = static::appendTo($sourceList->item($i), $destination, true);
+            $ret = static::appendTo($sourceList->item($i), $destination);
+            if (!($ret instanceof \DOMNode))
+                return false;
+        }
+
+        return $destination;
+    }
+
+    /**
+     * @param \DOMNodeList $sourceList
+     * @param \DOMNode $destination
+     * @return bool|\DOMNode
+     */
+    public static function cloneAndAppendChildrenTo(\DOMNodeList $sourceList, \DOMNode $destination)
+    {
+        $initial = $sourceList->length;
+        for($i = 0, $loop = 1; $i < $sourceList->length; $loop ++)
+        {
+            if ($loop > 1 && $sourceList->length === $initial)
+                $i++;
+
+            $ret = static::appendTo($sourceList->item($i)->cloneNode(true), $destination);
             if (!($ret instanceof \DOMNode))
                 return false;
         }

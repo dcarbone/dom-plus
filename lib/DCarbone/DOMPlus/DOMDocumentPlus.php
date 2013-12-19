@@ -158,7 +158,7 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
      */
     public function appendTo(\DOMNode $node)
     {
-        return DOMStatic::appendTo($this, $node, true);
+        return DOMStatic::appendTo($this, $node);
     }
 
     /**
@@ -170,7 +170,7 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         if ($node->ownerDocument === $this)
             return parent::appendChild($node);
 
-        return DOMStatic::appendTo($node, $this, true);
+        return DOMStatic::appendTo($node, $this);
     }
 
     /**
@@ -180,5 +180,32 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     public function appendChildren(\DOMNodeList $nodes)
     {
         return DOMStatic::appendChildrenTo($nodes, $this);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function cloneTo(\DOMNode $node)
+    {
+        return DOMStatic::appendTo($node, $this->cloneNode(true));
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode|null|bool
+     */
+    public function cloneAndAppendChild(\DOMNode $node)
+    {
+        return DOMStatic::appendTo($node->cloneNode(true), $this);
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @return \DOMNode|null|bool
+     */
+    public function cloneAndAppendChildren(\DOMNodeList $nodes)
+    {
+        return DOMStatic::cloneAndAppendChildrenTo($nodes, $this);
     }
 }
