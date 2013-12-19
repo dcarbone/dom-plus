@@ -122,16 +122,12 @@ class DOMStatic
      */
     public static function cloneAndAppendChildrenTo(\DOMNodeList $sourceList, \DOMNode $destination)
     {
-        $initial = $sourceList->length;
-        for($i = 0, $loop = 1; $i < $sourceList->length; $loop ++)
+        for($i = 0; $i < $sourceList->length; $i++)
         {
             $ret = static::appendTo($sourceList->item($i)->cloneNode(true), $destination);
 
             if (!($ret instanceof \DOMNode))
                 return false;
-
-            if ($loop > 1 && $sourceList->length === $initial)
-                $i++;
         }
 
         return $destination;
