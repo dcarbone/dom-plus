@@ -21,7 +21,8 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     public function __construct($version = '1.0', $encoding = 'UTF-8')
     {
         parent::__construct($version, $encoding);
-
+        
+        // @link http://www.php.net/manual/en/domdocument.registernodeclass.php
         $this->registerNodeClass('DOMNode', '\DCarbone\DOMPlus\DOMNodePlus');
         $this->registerNodeClass('DOMElement', '\DCarbone\DOMPlus\DOMElementPlus');
         $this->registerNodeClass('DOMCharacterData', '\DCarbone\DOMPlus\DOMCharacterDataPlus');
@@ -84,7 +85,8 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         }
         else if ($node !== null && (!defined('PHP_VERSION_ID') || (defined('PHP_VERSION_ID') && PHP_VERSION_ID < 50306)))
         {
-            $newDom = new DOMDocumentPlus();
+            /** @var self $newDom */
+            $newDom = new static(); // Allow for extension
             $newDom->appendChild($newDom->importNode($node->cloneNode(true), true));
 
             if ($windowsLineEndings === true)

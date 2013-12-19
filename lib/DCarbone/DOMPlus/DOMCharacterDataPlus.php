@@ -73,7 +73,7 @@ class DOMCharacterDataPlus extends \DOMCharacterData implements INodePlus
      */
     public function cloneAndAppendChild(\DOMNode $node)
     {
-        throw new \BadMethodCallException('Cannot append a child to a node of type DOMText');
+        throw new \BadMethodCallException('Cannot append a child to a node of type DOMCharacterData');
     }
 
     /**
@@ -83,6 +83,6 @@ class DOMCharacterDataPlus extends \DOMCharacterData implements INodePlus
      */
     public function cloneAndAppendChildren(\DOMNodeList $nodes)
     {
-        throw new \BadMethodCallException('Cannot append a child to a node of type DOMText');
+        throw new \BadMethodCallException('Cannot append a child to a node of type DOMCharacterData');
     }
 }
