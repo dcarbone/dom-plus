@@ -103,12 +103,13 @@ class DOMStatic
         $initial = $sourceList->length;
         for($i = 0, $loop = 1; $i < $sourceList->length; $loop ++)
         {
-            if ($loop > 1 && $sourceList->length === $initial)
-                $i++;
-
             $ret = static::appendTo($sourceList->item($i), $destination);
+
             if (!($ret instanceof \DOMNode))
                 return false;
+
+            if ($loop > 1 && $sourceList->length === $initial)
+                $i++;
         }
 
         return $destination;
@@ -124,12 +125,13 @@ class DOMStatic
         $initial = $sourceList->length;
         for($i = 0, $loop = 1; $i < $sourceList->length; $loop ++)
         {
-            if ($loop > 1 && $sourceList->length === $initial)
-                $i++;
-
             $ret = static::appendTo($sourceList->item($i)->cloneNode(true), $destination);
+
             if (!($ret instanceof \DOMNode))
                 return false;
+
+            if ($loop > 1 && $sourceList->length === $initial)
+                $i++;
         }
 
         return $destination;
