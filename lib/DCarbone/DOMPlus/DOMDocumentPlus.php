@@ -21,7 +21,7 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     public function __construct($version = '1.0', $encoding = 'UTF-8')
     {
         parent::__construct($version, $encoding);
-        
+
         // @link http://www.php.net/manual/en/domdocument.registernodeclass.php
         $this->registerNodeClass('DOMNode', '\DCarbone\DOMPlus\DOMNodePlus');
         $this->registerNodeClass('DOMElement', '\DCarbone\DOMPlus\DOMElementPlus');
@@ -130,6 +130,36 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
                 "",
                 ($windowsLineEndings === true ? str_replace(array("\n", "\r\r\n"), "\r\n", $this->saveHTML($node)) : $this->saveHTML($node)));
         }
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return DOMElementPlus
+     */
+    public function createElement($name, $value = null)
+    {
+        return parent::createElement($name, $value);
+    }
+
+    /**
+     * @param string $namespaceURI
+     * @param string $qualifiedName
+     * @param string $value
+     * @return DOMElementPlus
+     */
+    public function createElementNS($namespaceURI, $qualifiedName, $value = null)
+    {
+        return parent::createElementNS($namespaceURI, $qualifiedName, $value);
+    }
+
+    /**
+     * @param string $content
+     * @return DOMTextPlus
+     */
+    public function createTextNode($content)
+    {
+        return parent::createTextNode($content);
     }
 
     /**
