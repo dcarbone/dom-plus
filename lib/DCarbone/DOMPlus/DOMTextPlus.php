@@ -143,4 +143,12 @@ class DOMTextPlus extends \DOMText implements INodePlus
     {
         throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMText');
     }
+
+    /**
+     * @return \DOMNode|null
+     */
+    public function remove()
+    {
+        return DOMStatic::removeNode($this);
+    }
 }

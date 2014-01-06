@@ -294,4 +294,13 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     {
         return DOMStatic::cloneAndPrependChildrenTo($nodes, $this);
     }
+
+    /**
+     * @return \DOMNode|void
+     * @throws \BadMethodCallException
+     */
+    public function remove()
+    {
+        throw new \BadMethodCallException('Cannot remove DOMDocument object from itself');
+    }
 }

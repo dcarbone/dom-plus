@@ -212,4 +212,16 @@ class DOMStatic
 
         return $destinationNode;
     }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode|null
+     */
+    public static function removeNode(\DOMNode $node)
+    {
+        if ($node->parentNode !== null)
+            return $node->parentNode->removeChild($node);
+
+        return null;
+    }
 }

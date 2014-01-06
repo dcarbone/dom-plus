@@ -138,4 +138,12 @@ class DOMNodePlus extends \DOMNode implements INodePlus
     {
         return DOMStatic::cloneAndPrependChildrenTo($nodes, $this);
     }
+
+    /**
+     * @return \DOMNode|null
+     */
+    public function remove()
+    {
+        return DOMStatic::removeNode($this);
+    }
 }

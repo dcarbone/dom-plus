@@ -93,4 +93,9 @@ interface INodePlus
      * @return \DOMNode
      */
     public function cloneAndPrependChildren(\DOMNodeList $nodes);
+
+    /**
+     * @return \DOMNode
+     */
+    public function remove();
 }

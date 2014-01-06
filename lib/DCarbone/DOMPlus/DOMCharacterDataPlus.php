@@ -143,4 +143,12 @@ class DOMCharacterDataPlus extends \DOMCharacterData implements INodePlus
     {
         throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMCharacterData');
     }
+
+    /**
+     * @return \DOMNode|null
+     */
+    public function remove()
+    {
+        return DOMStatic::removeNode($this);
+    }
 }
