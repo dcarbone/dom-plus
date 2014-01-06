@@ -29,12 +29,12 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     }
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNode $destinationNode
      * @return \DOMNode|null
      */
-    public function appendTo(\DOMNode $node)
+    public function appendTo(\DOMNode $destinationNode)
     {
-        return DOMStatic::appendTo($this, $node);
+        return DOMStatic::appendTo($this, $destinationNode);
     }
 
     /**
@@ -59,12 +59,12 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     }
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNode $destinationNode
      * @return \DOMNode
      */
-    public function cloneTo(\DOMNode $node)
+    public function cloneAndAppendTo(\DOMNode $destinationNode)
     {
-        return DOMStatic::appendTo($node, $this->cloneNode(true));
+        return DOMStatic::appendTo($destinationNode, $this->cloneNode(true));
     }
 
     /**
@@ -83,5 +83,59 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     public function cloneAndAppendChildren(\DOMNodeList $nodes)
     {
         return DOMStatic::cloneAndAppendChildrenTo($nodes, $this);
+    }
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function prependTo(\DOMNode $destinationNode)
+    {
+        return DOMStatic::prependTo($this, $destinationNode);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function prependChild(\DOMNode $node)
+    {
+        return DOMStatic::prependTo($node, $this);
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @return \DOMNode
+     */
+    public function prependChildren(\DOMNodeList $nodes)
+    {
+        return DOMStatic::prependChildrenTo($nodes, $this);
+    }
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function cloneAndPrependTo(\DOMNode $destinationNode)
+    {
+        return DOMStatic::prependTo($this->cloneNode(true), $destinationNode);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChild(\DOMNode $node)
+    {
+        return DOMStatic::prependTo($node->cloneNode(true), $this);
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChildren(\DOMNodeList $nodes)
+    {
+        return DOMStatic::cloneAndPrependChildrenTo($nodes, $this);
     }
 }

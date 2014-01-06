@@ -27,10 +27,10 @@ Additionally, these methods will also exist if you try to consume XML with this 
 If you use this with XML and find issues, please report them
 
 # Classes
-## DOMNodePlus
-## DOMCharacterDataPlus
-## DOMElementPlus
-## DOMTextPlus
+### DOMNodePlus
+### DOMCharacterDataPlus
+### DOMElementPlus
+### DOMTextPlus
 
 Each of these classes implements the following new or changed methods:
 
@@ -52,10 +52,16 @@ public function getNextSiblingNode(array $seek, array $stop = array(), $nodeValu
 public function getPreviousSiblingNode(array $seek, array $stop = array(), $nodeValueRegex = null);
 
 /**
- * @param \DOMNode $node
+ * @param \DOMNode $destinationNode
  * @return \DOMNode
  */
-public function appendTo(\DOMNode $node);
+public function appendTo(\DOMNode $destinationNode);
+
+/**
+ * @param \DOMNode $destinationNode
+ * @return \DOMNode
+ */
+public function prependTo(\DOMNode $destinationNode);
 
 /**
  * @param \DOMNode $node
@@ -64,16 +70,34 @@ public function appendTo(\DOMNode $node);
 public function appendChild(\DOMNode $node);
 
 /**
+ * @param \DOMNode $node
+ * @return \DOMNode
+ */
+public function prependChild(\DOMNode $node);
+
+/**
  * @param \DOMNodeList $nodes
  * @return \DOMNode
  */
 public function appendChildren(\DOMNodeList $nodes);
 
 /**
- * @param \DOMNode $node
+ * @param \DOMNodeList $nodes
  * @return \DOMNode
  */
-public function cloneTo(\DOMNode $node);
+public function prependChildren(\DOMNodeList $nodes);
+
+/**
+ * @param \DOMNode $destinationNode
+ * @return \DOMNode
+ */
+public function cloneAndAppendTo(\DOMNode $destinationNode);
+
+/**
+ * @param \DOMNode $destinationNode
+ * @return \DOMNode
+ */
+public function cloneAndPrependTo(\DOMNode $destinationNode);
 
 /**
  * @param \DOMNode $node
@@ -82,10 +106,22 @@ public function cloneTo(\DOMNode $node);
 public function cloneAndAppendChild(\DOMNode $node);
 
 /**
+ * @param \DOMNode $node
+ * @return \DOMNode
+ */
+public function cloneAndPrependChild(\DOMNode $node);
+
+/**
  * @param \DOMNodeList $nodes
  * @return \DOMNode
  */
 public function cloneAndAppendChildren(\DOMNodeList $nodes);
+
+/**
+ * @param \DOMNodeList $nodes
+ * @return \DOMNode
+ */
+public function cloneAndPrependChildren(\DOMNodeList $nodes);
 ```
 
 **Additionally**, DOMDocumentPlus has some enhancements inspired by

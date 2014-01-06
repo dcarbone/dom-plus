@@ -29,12 +29,12 @@ class DOMTextPlus extends \DOMText implements INodePlus
     }
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNode $destinationNode
      * @return \DOMNode|null
      */
-    public function appendTo(\DOMNode $node)
+    public function appendTo(\DOMNode $destinationNode)
     {
-        return DOMStatic::appendTo($this, $node);
+        return DOMStatic::appendTo($this, $destinationNode);
     }
 
     /**
@@ -58,12 +58,12 @@ class DOMTextPlus extends \DOMText implements INodePlus
     }
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNode $destinationNode
      * @return \DOMNode
      */
-    public function cloneTo(\DOMNode $node)
+    public function cloneAndAppendTo(\DOMNode $destinationNode)
     {
-        return DOMStatic::appendTo($node, $this->cloneNode(true));
+        return DOMStatic::appendTo($destinationNode, $this->cloneNode(true));
     }
 
     /**
@@ -84,5 +84,63 @@ class DOMTextPlus extends \DOMText implements INodePlus
     public function cloneAndAppendChildren(\DOMNodeList $nodes)
     {
         throw new \BadMethodCallException('Cannot append a child to a node of type DOMText');
+    }
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function prependTo(\DOMNode $destinationNode)
+    {
+        return DOMStatic::prependTo($this, $destinationNode);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @throws \BadMethodCallException
+     * @return \DOMNode
+     */
+    public function prependChild(\DOMNode $node)
+    {
+        throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMText');
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @throws \BadMethodCallException
+     * @return \DOMNode
+     */
+    public function prependChildren(\DOMNodeList $nodes)
+    {
+        throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMText');
+    }
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function cloneAndPrependTo(\DOMNode $destinationNode)
+    {
+        return DOMStatic::prependTo($this->cloneNode(true), $destinationNode);
+    }
+
+    /**
+     * @param \DOMNode $node
+     * @throws \BadMethodCallException
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChild(\DOMNode $node)
+    {
+        throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMText');
+    }
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @throws \BadMethodCallException
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChildren(\DOMNodeList $nodes)
+    {
+        throw new \BadMethodCallException('Cannot prepend a child to a node of type DOMText');
     }
 }

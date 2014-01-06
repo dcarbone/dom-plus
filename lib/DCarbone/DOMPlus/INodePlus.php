@@ -23,10 +23,16 @@ interface INodePlus
     public function getPreviousSiblingNode(array $seek, array $stop = array(), $nodeValueRegex = null);
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNode $destinationNode
      * @return \DOMNode
      */
-    public function appendTo(\DOMNode $node);
+    public function appendTo(\DOMNode $destinationNode);
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function prependTo(\DOMNode $destinationNode);
 
     /**
      * @param \DOMNode $node
@@ -35,16 +41,34 @@ interface INodePlus
     public function appendChild(\DOMNode $node);
 
     /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function prependChild(\DOMNode $node);
+
+    /**
      * @param \DOMNodeList $nodes
      * @return \DOMNode
      */
     public function appendChildren(\DOMNodeList $nodes);
 
     /**
-     * @param \DOMNode $node
+     * @param \DOMNodeList $nodes
      * @return \DOMNode
      */
-    public function cloneTo(\DOMNode $node);
+    public function prependChildren(\DOMNodeList $nodes);
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function cloneAndAppendTo(\DOMNode $destinationNode);
+
+    /**
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode
+     */
+    public function cloneAndPrependTo(\DOMNode $destinationNode);
 
     /**
      * @param \DOMNode $node
@@ -53,8 +77,20 @@ interface INodePlus
     public function cloneAndAppendChild(\DOMNode $node);
 
     /**
+     * @param \DOMNode $node
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChild(\DOMNode $node);
+
+    /**
      * @param \DOMNodeList $nodes
      * @return \DOMNode
      */
     public function cloneAndAppendChildren(\DOMNodeList $nodes);
+
+    /**
+     * @param \DOMNodeList $nodes
+     * @return \DOMNode
+     */
+    public function cloneAndPrependChildren(\DOMNodeList $nodes);
 }

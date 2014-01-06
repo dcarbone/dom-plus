@@ -65,71 +65,151 @@ class DOMStatic
     }
 
     /**
-     * @param \DOMNode $source
-     * @param \DOMNode $destination
+     * @param \DOMNode $sourceNode
+     * @param \DOMNode $destinationNode
      * @return \DOMNode|null
      */
-    public static function appendTo(\DOMNode $source, \DOMNode $destination)
+    public static function appendTo(\DOMNode $sourceNode, \DOMNode $destinationNode)
     {
-        if ($destination instanceof \DOMDocument)
+        if ($destinationNode instanceof \DOMDocument)
         {
-            if ($source->ownerDocument === $destination)
-                return $destination->appendChild($source);
+            if ($sourceNode->ownerDocument === $destinationNode)
+                return $destinationNode->appendChild($sourceNode);
 
-            $ret = $destination->appendChild($destination->importNode($source, true));
-            if ($source->parentNode !== null)
-                $source->parentNode->removeChild($source);
+            $ret = $destinationNode->appendChild($destinationNode->importNode($sourceNode, true));
+            if ($sourceNode->parentNode !== null)
+                $sourceNode->parentNode->removeChild($sourceNode);
 
             return $ret;
         }
 
-        if ($source->ownerDocument === $destination->ownerDocument)
-            return $destination->appendChild($source);
+        if ($sourceNode->ownerDocument === $destinationNode->ownerDocument)
+            return $destinationNode->appendChild($sourceNode);
 
-        $ret = $destination->appendChild($destination->ownerDocument->importNode($source, true));
-        if ($source->parentNode !== null)
-            $source->parentNode->removeChild($source);
+        $ret = $destinationNode->appendChild($destinationNode->ownerDocument->importNode($sourceNode, true));
+        if ($sourceNode->parentNode !== null)
+            $sourceNode->parentNode->removeChild($sourceNode);
 
         return $ret;
     }
 
     /**
-     * @param \DOMNodeList $sourceList
-     * @param \DOMNode $destination
-     * @return \DOMNode|bool
+     * @param \DOMNode $sourceNode
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode|null
      */
-    public static function appendChildrenTo(\DOMNodeList $sourceList, \DOMNode $destination)
+    public static function prependTo(\DOMNode $sourceNode, \DOMNode $destinationNode)
     {
-        $initial = $sourceList->length;
-        for($i = 0, $loop = 1; $i < $sourceList->length; $loop ++)
+        // If the destination does not have any child nodes
+        if (!($destinationNode->childNodes instanceof \DOMNodeList) || $destinationNode->childNodes->length === 0)
+            return static::appendTo($sourceNode, $destinationNode);
+
+        if ($destinationNode->firstChild !== null)
         {
-            $ret = static::appendTo($sourceList->item($i), $destination);
+            if ($destinationNode instanceof \DOMDocument)
+            {
+                if ($sourceNode->ownerDocument === $destinationNode)
+                    return $destinationNode->insertBefore($sourceNode, $destinationNode->firstChild);
 
-            if (!($ret instanceof \DOMNode))
-                return false;
+                $ret = $destinationNode->insertBefore($destinationNode->importNode($sourceNode, true), $destinationNode->firstChild);
+                if ($sourceNode->parentNode !== null)
+                    $sourceNode->parentNode->removeChild($sourceNode);
 
-            if ($loop > 1 && $sourceList->length === $initial)
-                $i++;
+                return $ret;
+            }
+
+
+            if ($sourceNode->ownerDocument === $destinationNode->ownerDocument)
+                return $destinationNode->insertBefore($sourceNode, $destinationNode->firstChild);
+
+            $ret = $destinationNode->insertBefore($destinationNode->ownerDocument->importNode($sourceNode, true), $destinationNode->firstChild);
+            if ($sourceNode->parentNode !== null)
+                $sourceNode->parentNode->removeChild($sourceNode);
+
+            return $ret;
         }
 
-        return $destination;
+        // If we make this far, something odd has happened.
+        return null;
     }
 
     /**
-     * @param \DOMNodeList $sourceList
-     * @param \DOMNode $destination
+     * @param \DOMNodeList $sourceNodeList
+     * @param \DOMNode $destinationNode
+     * @return \DOMNode|bool
+     */
+    public static function appendChildrenTo(\DOMNodeList $sourceNodeList, \DOMNode $destinationNode)
+    {
+        $initial = $sourceNodeList->length;
+        for($i = 0, $loop = 1; $i < $sourceNodeList->length; $loop ++)
+        {
+            $ret = static::appendTo($sourceNodeList->item($i), $destinationNode);
+
+            if (!($ret instanceof \DOMNode))
+                return false;
+
+            if ($loop > 1 && $sourceNodeList->length === $initial)
+                $i++;
+        }
+
+        return $destinationNode;
+    }
+
+    /**
+     * @param \DOMNodeList $sourceNodeList
+     * @param \DOMNode $destinationNode
      * @return bool|\DOMNode
      */
-    public static function cloneAndAppendChildrenTo(\DOMNodeList $sourceList, \DOMNode $destination)
+    public static function prependChildrenTo(\DOMNodeList $sourceNodeList, \DOMNode $destinationNode)
     {
-        for($i = 0; $i < $sourceList->length; $i++)
+        $initial = $sourceNodeList->length;
+        for($i = 0, $loop = 1; $i < $sourceNodeList->length; $loop ++)
         {
-            $ret = static::appendTo($sourceList->item($i)->cloneNode(true), $destination);
+            $ret = static::prependTo($sourceNodeList->item($i), $destinationNode);
+
+            if (!($ret instanceof \DOMNode))
+                return false;
+
+            if ($loop > 1 && $sourceNodeList->length === $initial)
+                $i++;
+        }
+
+        return $destinationNode;
+    }
+
+    /**
+     * @param \DOMNodeList $sourceNodeList
+     * @param \DOMNode $destinationNode
+     * @return bool|\DOMNode
+     */
+    public static function cloneAndAppendChildrenTo(\DOMNodeList $sourceNodeList, \DOMNode $destinationNode)
+    {
+        for($i = 0; $i < $sourceNodeList->length; $i++)
+        {
+            $ret = static::appendTo($sourceNodeList->item($i)->cloneNode(true), $destinationNode);
 
             if (!($ret instanceof \DOMNode))
                 return false;
         }
 
-        return $destination;
+        return $destinationNode;
+    }
+
+    /**
+     * @param \DOMNodeList $sourceNodeList
+     * @param \DOMNode $destinationNode
+     * @return bool|\DOMNode
+     */
+    public static function cloneAndPrependChildrenTo(\DOMNodeList $sourceNodeList, \DOMNode $destinationNode)
+    {
+        for($i = 0; $i < $sourceNodeList->length; $i++)
+        {
+            $ret = static::prependTo($sourceNodeList->item($i)->cloneNode(true), $destinationNode);
+
+            if (!($ret instanceof \DOMNode))
+                return false;
+        }
+
+        return $destinationNode;
     }
 }
