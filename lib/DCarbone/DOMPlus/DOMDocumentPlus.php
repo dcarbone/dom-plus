@@ -23,10 +23,10 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         parent::__construct($version, $encoding);
 
         // @link http://www.php.net/manual/en/domdocument.registernodeclass.php
-        $this->registerNodeClass('DOMNode', '\DCarbone\DOMPlus\DOMNodePlus');
-        $this->registerNodeClass('DOMElement', '\DCarbone\DOMPlus\DOMElementPlus');
+        $this->registerNodeClass('DOMNode',          '\DCarbone\DOMPlus\DOMNodePlus');
+        $this->registerNodeClass('DOMElement',       '\DCarbone\DOMPlus\DOMElementPlus');
         $this->registerNodeClass('DOMCharacterData', '\DCarbone\DOMPlus\DOMCharacterDataPlus');
-        $this->registerNodeClass('DOMText', '\DCarbone\DOMPlus\DOMTextPlus');
+        $this->registerNodeClass('DOMText',          '\DCarbone\DOMPlus\DOMTextPlus');
 
         libxml_use_internal_errors(true);
     }
@@ -80,10 +80,11 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         {
             if ($windowsLineEndings === true)
                 return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML($node));
-            else
-                return parent::saveHTML($node);
+
+            return parent::saveHTML($node);
         }
-        else if ($node !== null && (!defined('PHP_VERSION_ID') || (defined('PHP_VERSION_ID') && PHP_VERSION_ID < 50306)))
+
+        if ($node !== null && (!defined('PHP_VERSION_ID') || (defined('PHP_VERSION_ID') && PHP_VERSION_ID < 50306)))
         {
             /** @var self $newDom */
             $newDom = new static(); // Allow for extension
@@ -91,16 +92,14 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
 
             if ($windowsLineEndings === true)
                 return str_replace(array("\n", "\r\r\n"), "\r\n", $newDom->saveHTML());
-            else
-                return $newDom->saveHTML();
+
+            return $newDom->saveHTML();
         }
-        else
-        {
-            if ($windowsLineEndings === true)
-                return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML());
-            else
-                return parent::saveHTML();
-        }
+
+        if ($windowsLineEndings === true)
+            return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML());
+
+        return parent::saveHTML();
     }
 
     /**
@@ -120,16 +119,12 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         {
             if ($windowsLineEndings === true)
                 return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML($node));
-            else
-                return parent::saveHTML($node);
+
+            return parent::saveHTML($node);
         }
-        else
-        {
-            return preg_replace(array("/^\<\!DOCTYPE.*?<body>/si",
-                    "!</body>.*</html>$!si"),
-                "",
+
+        return preg_replace(array("/^\<\!DOCTYPE.*?<body>/si", "!</body>.*</html>$!si"), '',
                 ($windowsLineEndings === true ? str_replace(array("\n", "\r\r\n"), "\r\n", $this->saveHTML($node)) : $this->saveHTML($node)));
-        }
     }
 
     /**

@@ -6,6 +6,9 @@
  */
 class DOMElementPlus extends \DOMElement implements INodePlus
 {
+    /** @var array */
+    protected $htmlClasses = array();
+
     /**
      * @param array $seek
      * @param array $stop
@@ -145,5 +148,92 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     public function remove()
     {
         return DOMStatic::removeNode($this);
+    }
+
+    /**
+     * Now typecasts value to string before calling parent setAttribute method
+     *
+     * @param string $name
+     * @param string $value
+     * @return \DOMAttr
+     */
+    public function setAttribute($name, $value)
+    {
+        switch(strtolower($name))
+        {
+            case 'class' :
+                return $this->addHtmlClass($value);
+
+            default :
+                return parent::setAttribute($name, (string)$value);
+        }
+    }
+
+    /**
+     * Checks to see if "class" html element attribute has been set and has the passed-in value
+     *
+     * @param string $className
+     * @throws \InvalidArgumentException
+     * @return bool
+     */
+    public function hasHtmlClass($className)
+    {
+        if (!is_string($className))
+            throw new \InvalidArgumentException('DOMElementPlus::hasClass - "$className" expected to be string, got "'.gettype($className).'"');
+
+        if ($className === '')
+            throw new \InvalidArgumentException('DOMElementPlus::hasClass - "$className" cannot be empty string');
+
+        if ($this->hasAttribute('class') && count($this->htmlClasses) === 0)
+            $this->htmlClasses = explode(' ', $this->getAttribute('class'));
+
+        return in_array($className, $this->htmlClasses, true);
+    }
+
+    /**
+     * Add an html class to the "class" attribute on this element
+     *
+     * @param $className
+     * @throws \InvalidArgumentException
+     * @return $this
+     */
+    public function addHtmlClass($className)
+    {
+        if (!is_string($className))
+            throw new \InvalidArgumentException('DOMElementPlus::hasClass - "$className" expected to be string, got "'.gettype($className).'"');
+
+        if ($className === '' || $this->hasHtmlClass($className))
+            return $this;
+
+        $this->htmlClasses[] = $className;
+        $this->htmlClasses = array_unique($this->htmlClasses);
+
+        parent::setAttribute('class', implode(' ', $this->htmlClasses));
+
+        return $this;
+    }
+
+    /**
+     * Remove an html class from the "class" attribute on this element
+     *
+     * @param $className
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    public function removeHtmlClass($className)
+    {
+        if (!is_string($className))
+            throw new \InvalidArgumentException('DOMElementPlus::hasClass - "$className" expected to be string, got "'.gettype($className).'"');
+
+        if ($className === '' || !$this->hasHtmlClass($className))
+            return $this;
+
+        $idx = array_search($className, $this->htmlClasses, true);
+        unset($this->htmlClasses[$idx]);
+        $this->htmlClasses = array_unique($this->htmlClasses);
+
+        parent::setAttribute('class', implode(' ', $this->htmlClasses));
+
+        return $this;
     }
 }
