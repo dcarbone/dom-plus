@@ -4,7 +4,7 @@
  * Class DOMStatic
  * @package DCarbone\DOMPlus
  */
-class DOMStatic
+abstract class DOMStatic
 {
     /**
      * @param \DOMNode $scope

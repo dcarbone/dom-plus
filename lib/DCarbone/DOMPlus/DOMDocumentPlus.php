@@ -1,5 +1,7 @@
 <?php namespace DCarbone\DOMPlus;
 
+libxml_use_internal_errors(true);
+
 /**
  * This class was heavily inspired by Artem Russakovskii's SmartDOMDocument class
  *
@@ -27,8 +29,6 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
         $this->registerNodeClass('DOMElement',       '\DCarbone\DOMPlus\DOMElementPlus');
         $this->registerNodeClass('DOMCharacterData', '\DCarbone\DOMPlus\DOMCharacterDataPlus');
         $this->registerNodeClass('DOMText',          '\DCarbone\DOMPlus\DOMTextPlus');
-
-        libxml_use_internal_errors(true);
     }
 
     /**
