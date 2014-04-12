@@ -171,7 +171,6 @@ public function setAttribute($name, $value);
  * Checks to see if "class" html element attribute has been set and has the passed-in value
  *
  * @param string $className
- * @throws \InvalidArgumentException
  * @return bool
  */
 public function hasHtmlClass($className);
@@ -179,20 +178,20 @@ public function hasHtmlClass($className);
 /**
  * Add an html class to the "class" attribute on this element
  *
- * @param $className
- * @throws \InvalidArgumentException
- * @return $this
+ * @param string $className
+ * @param bool $returnAttr
+ * @return DOMElementPlus|\DOMAttr
  */
-public function addHtmlClass($className);
+public function addHtmlClass($className, $returnAttr = false);
 
 /**
  * Remove an html class from the "class" attribute on this element
  *
- * @param $className
- * @return $this
- * @throws \InvalidArgumentException
+ * @param string $className
+ * @param bool $returnAttr
+ * @return DOMElementPlus|\DOMAttr
  */
-public function removeHtmlClass($className);
+public function removeHtmlClass($className, $returnAttr = false);
 
 /**
  * Does this element already have this style defined?
