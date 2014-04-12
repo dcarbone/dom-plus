@@ -407,7 +407,9 @@ class DOMElementPlus extends \DOMElement implements INodePlus
 
 
     /**
-     * @param $styleName
+     * Does this element already have this style defined?
+     *
+     * @param string $styleName
      * @return bool
      */
     public function hasCssStyle($styleName)
@@ -421,11 +423,13 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     }
 
     /**
+     * Explicitly define a specific CSS style for this element
+     *
      * @param string $styleName
      * @param string $styleValue
      * @param bool $returnAttr
      * @throws \InvalidArgumentException
-     * @return DOMElementPlus
+     * @return DOMElementPlus|\DOMAttr
      */
     public function setCssStyle($styleName, $styleValue, $returnAttr = false)
     {
@@ -444,9 +448,11 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     }
 
     /**
+     * Remove a CSS Style definition from this element
+     *
      * @param string $styleName
      * @param bool $returnAttr
-     * @return DOMElementPlus
+     * @return DOMElementPlus|\DOMAttr
      */
     public function removeCssStyle($styleName, $returnAttr = false)
     {
@@ -461,6 +467,8 @@ class DOMElementPlus extends \DOMElement implements INodePlus
     }
 
     /**
+     * Explicitly override any/all existing "style" attribute values with the passed in value
+     *
      * @param string $value
      * @param bool $returnAttr
      * @return DOMElementPlus|\DOMAttr
