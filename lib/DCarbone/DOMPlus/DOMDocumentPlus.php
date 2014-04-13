@@ -1,7 +1,5 @@
 <?php namespace DCarbone\DOMPlus;
 
-libxml_use_internal_errors(true);
-
 /**
  * This class was heavily inspired by Artem Russakovskii's SmartDOMDocument class
  *
@@ -14,9 +12,6 @@ libxml_use_internal_errors(true);
  */
 class DOMDocumentPlus extends \DOMDocument implements INodePlus
 {
-    /** @var array */
-    protected $loadErrors = array();
-
     /**
      * Constructor
      */
@@ -32,16 +27,6 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     }
 
     /**
-     * Get the last errors thrown when loading HTML/XML
-     *
-     * @return array
-     */
-    public function getLastLoadErrors()
-    {
-        return $this->loadErrors;
-    }
-
-    /**
      * Load HTML with a proper encoding fix/hack.
      * Borrowed from the link below.
      *
@@ -53,12 +38,8 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
      */
     public function loadHTML($html, $encoding = 'UTF-8')
     {
-        libxml_clear_errors();
-
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', $encoding);
         $return = parent::loadHTML($html);
-
-        $this->loadErrors = libxml_get_errors();
 
         return $return;
     }
