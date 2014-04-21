@@ -24,8 +24,8 @@
     },
 
     "autoload" : {
-        "psr-0" : {
-            "DCarbone\\DOMPlus\\" : "lib/"
+        "psr-4" : {
+            "DCarbone\\DOMPlus\\" : ""
         }
     }
 }
