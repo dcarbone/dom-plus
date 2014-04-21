@@ -3,7 +3,7 @@ dom-plus
 
 A simple DOMDocument class wrapper that adds some simple improvements
 
-This class utilizes the PHP DOMDocument method <a href="http://www.php.net/manual/en/domdocument.registernodeclass.php" target="_blank">registerNodeClass<a> to extend several classes.
+This class utilizes the PHP DOMDocument method <a href="http://www.php.net/manual/en/domdocument.registernodeclass.php" target="_blank">registerNodeClass</a> to extend several classes.
 
 What this means is that whenever create a new instance of  ``` DCarbone\DOMPlus\DOMDocumentPlus ```, all DOMNode, DOMElement, DOMText, and DOMCharacterData objects contained within the document are
 instantiated as the modified classes I have included in this library.
