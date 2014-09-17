@@ -17,7 +17,7 @@ If you have a version of PHP >= 5.3.6, it uses base method functionality.
 ## saveHTMLExact
 
 In addition to the changes presented above, saveHTMLExact is a method that will allow you receive ONLY the HTML contained
-within the <body> element.  No data outside of <body /> will be included in the response.
+within the ` <body> ` element.  No data outside of ` <body /> ` will be included in the response.
 
 ```php
 $dom = new DOMDocumentPlus();
