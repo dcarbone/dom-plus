@@ -27,21 +27,22 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
     }
 
     /**
-     * Load HTML with a proper encoding fix/hack.
-     * Borrowed from the link below.
-     *
-     * @link http://www.php.net/manual/en/domdocument.loadhtml.php
+     * Utilizes http://php.net/manual/en/function.mb-convert-encoding.php prior to loading html
      *
      * @param string $html
-     * @param string $encoding
-     * @return bool
+     * @param string $targetEncoding
+     * @param null|string $sourceEncoding
+     * @return DOMDocumentPlus
      */
-    public function loadHTML($html, $encoding = 'UTF-8')
+    public static function htmlDocumentFromStringWithConversion($html, $targetEncoding = 'UTF-8', $sourceEncoding = null)
     {
-        $html = mb_convert_encoding($html, 'HTML-ENTITIES', $encoding);
-        $return = parent::loadHTML($html);
+        /** @var DOMDocumentPlus $dom */
+        $dom = new static;
 
-        return $return;
+        $dom->loadHTML(
+            mb_convert_encoding($html, $targetEncoding, $sourceEncoding), 'UTF-8');
+
+        return $dom;
     }
 
     /**
@@ -51,19 +52,14 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
      * This little hack allows us to do just that.
      *
      * @param \DOMNode $node
-     * @param bool $windowsLineEndings
      * @return string
      */
-    public function saveHTML(\DOMNode $node = null, $windowsLineEndings = false)
+    public function saveHTML(\DOMNode $node = null)
     {
         $this->formatOutput = true;
-        if (defined('PHP_VERSION_ID') && PHP_VERSION_ID >= 50306)
-        {
-            if ($windowsLineEndings === true)
-                return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML($node));
 
+        if (defined('PHP_VERSION_ID') && PHP_VERSION_ID >= 50306)
             return parent::saveHTML($node);
-        }
 
         if ($node !== null && (!defined('PHP_VERSION_ID') || (defined('PHP_VERSION_ID') && PHP_VERSION_ID < 50306)))
         {
@@ -71,14 +67,8 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
             $newDom = new static(); // Allow for extension
             $newDom->appendChild($newDom->importNode($node->cloneNode(true), true));
 
-            if ($windowsLineEndings === true)
-                return str_replace(array("\n", "\r\r\n"), "\r\n", $newDom->saveHTML());
-
             return $newDom->saveHTML();
         }
-
-        if ($windowsLineEndings === true)
-            return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML());
 
         return parent::saveHTML();
     }
@@ -89,23 +79,16 @@ class DOMDocumentPlus extends \DOMDocument implements INodePlus
      * @link http://php.net/manual/en/migration52.methods.php
      *
      * @param \DOMNode $node
-     * @param bool $windowsLineEndings
      * @return string
      */
-    public function saveHTMLExact(\DOMNode $node = null, $windowsLineEndings = false)
+    public function saveHTMLExact(\DOMNode $node = null)
     {
         $this->formatOutput = true;
 
         if ($node !== null && defined('PHP_VERSION_ID') && PHP_VERSION_ID >= 50306)
-        {
-            if ($windowsLineEndings === true)
-                return str_replace(array("\n", "\r\r\n"), "\r\n", parent::saveHTML($node));
-
             return parent::saveHTML($node);
-        }
 
-        return preg_replace(array("/^\<\!DOCTYPE.*?<body>/si", "!</body>.*</html>$!si"), '',
-                ($windowsLineEndings === true ? str_replace(array("\n", "\r\r\n"), "\r\n", $this->saveHTML($node)) : $this->saveHTML($node)));
+        return preg_replace(array('/^\<\!DOCTYPE.*?<body>/si', '!</body>.*</html>$!si'), '', $this->saveHTML($node));
     }
 
     /**
